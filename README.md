@@ -30,7 +30,7 @@ A full-stack productivity application built with **Next.js** and **Express**.
 1. **Clone the repository**
 
    ```bash
-   git clone https://github.com/your-username/productify.git
+   git clone https://github.com/kamalhara/productify.git
    cd productify
    ```
 
