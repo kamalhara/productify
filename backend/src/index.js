@@ -15,7 +15,7 @@ app.use(
     origin: ENV.FRONTEND_URL,
   }),
 );
-
+const user = {};
 app.get("/", (req, res) => {
   res.json({
     message:

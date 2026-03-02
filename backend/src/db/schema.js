@@ -53,3 +53,10 @@ export const commentRelations = relations(comment, ({ one }) => ({
 }));
 
 export const User = user.$inferSelect;
+export const newUser = user.$inferInsert;
+
+export const Product = product.$inferSelect;
+export const newProduct = product.$inferInsert;
+
+export const Comment = comment.$inferSelect;
+export const newComment = comment.$inferInsert;
