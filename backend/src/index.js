@@ -28,6 +28,10 @@ app.get("/", (req, res) => {
   });
 });
 
+app.use("/api/user", userRoutes);
+app.use("/api/product", productRoutes);
+app.use("/api/comment", commentRoutes);
+
 app.listen(ENV.PORT, () => {
   console.log(`Server is running on port ${ENV.PORT}`);
 });
