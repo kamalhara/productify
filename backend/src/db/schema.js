@@ -1,8 +1,8 @@
-import { pgTable, serial, text, timestamp } from "drizzle-orm/pg-core";
+import { pgTable, serial, text, timestamp, integer } from "drizzle-orm/pg-core";
 import { relations } from "drizzle-orm";
 
-export const users = pgTable("users", {
-  id: serial("id").primaryKey(),
+export const user = pgTable("user", {
+  id: text("id").primaryKey(),
   email: text("email").notNull().unique(),
   name: text("name"),
   imageUrl: text("image_url"),
@@ -15,23 +15,29 @@ export const users = pgTable("users", {
 
 export const product = pgTable("products", {
   id: serial("id").primaryKey(),
-  name: text("name").notNull(),
+  title: text("title").notNull(),
   description: text("description").notNull(),
   imageUrl: text("image_url").notNull(),
   userId: text("user_id")
     .notNull()
     .references(() => user.id, { onDelete: "cascade" }),
+  createdAt: timestamp("created_at", { mode: "date" }).notNull().defaultNow(),
+  updatedAt: timestamp("updated_at", { mode: "date" })
+    .notNull()
+    .defaultNow()
+    .$onUpdate(() => new Date()),
 });
 
 export const comment = pgTable("comments", {
   id: serial("id").primaryKey(),
   content: text("content").notNull(),
-  productId: text("product_id")
+  productId: integer("product_id")
     .notNull()
     .references(() => product.id, { onDelete: "cascade" }),
   userId: text("user_id")
     .notNull()
     .references(() => user.id, { onDelete: "cascade" }),
+  createdAt: timestamp("created_at", { mode: "date" }).notNull().defaultNow(),
 });
 
 export const userRelations = relations(user, ({ many }) => ({
@@ -51,12 +57,3 @@ export const commentRelations = relations(comment, ({ one }) => ({
   }),
   user: one(user, { fields: [comment.userId], references: [user.id] }),
 }));
-
-export const User = user.$inferSelect;
-export const newUser = user.$inferInsert;
-
-export const Product = product.$inferSelect;
-export const newProduct = product.$inferInsert;
-
-export const Comment = comment.$inferSelect;
-export const newComment = comment.$inferInsert;

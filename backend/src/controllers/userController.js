@@ -25,6 +25,8 @@ export const syncUser = async (req, res) => {
     res.status(200).json(user);
   } catch (error) {
     console.error(error);
-    return res.status(500).json({ error: "Internal server error" });
+    return res
+      .status(500)
+      .json({ error: "Internal server error", details: error.message });
   }
 };

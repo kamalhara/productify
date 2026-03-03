@@ -9,8 +9,8 @@ export const createComment = async (req, res) => {
       return res.status(401).json({ error: "Unauthorized" });
     }
 
-    const content = req.body;
-    const productId = req.params;
+    const { content } = req.body;
+    const { productId } = req.params;
 
     if (!content || !productId) {
       return res
@@ -31,6 +31,7 @@ export const createComment = async (req, res) => {
   } catch (err) {
     res.status(400).json({
       error: "Failed to create comment",
+      err,
     });
   }
 };
@@ -42,7 +43,7 @@ export const deleteComment = async (req, res) => {
     if (!userId) {
       return res.status(401).json({ error: "Unauthorized" });
     }
-    const id = req.params;
+    const { commentId: id } = req.params;
 
     const existingComment = await queries.getCommentById(id);
 
@@ -60,6 +61,7 @@ export const deleteComment = async (req, res) => {
   } catch (err) {
     res.status(400).json({
       error: "Failed to delete comment",
+      err,
     });
   }
 };

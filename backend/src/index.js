@@ -4,6 +4,9 @@ import express from "express";
 import { ENV } from "./config/env.js";
 import { clerkMiddleware } from "@clerk/express";
 import cors from "cors";
+import userRoutes from "./routes/userRoutes.js";
+import productRoutes from "./routes/productRoutes.js";
+import commentRoutes from "./routes/commentRoutes.js";
 
 const app = express();
 
@@ -15,7 +18,6 @@ app.use(
     origin: ENV.FRONTEND_URL,
   }),
 );
-const user = {};
 app.get("/", (req, res) => {
   res.json({
     message:

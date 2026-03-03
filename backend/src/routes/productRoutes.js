@@ -7,7 +7,7 @@ import {
   getProductById,
   updateProduct,
   deleteProduct,
-} from "../controllers/productController";
+} from "../controllers/productController.js";
 import { requireAuth } from "@clerk/express";
 
 const router = Router();
