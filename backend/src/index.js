@@ -10,14 +10,15 @@ import commentRoutes from "./routes/commentRoutes.js";
 
 const app = express();
 
-app.use(clerkMiddleware());
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
 app.use(
   cors({
     origin: ENV.FRONTEND_URL,
+    credentials: true,
   }),
 );
+app.use(clerkMiddleware());
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 app.get("/", (req, res) => {
   res.json({
     message:
