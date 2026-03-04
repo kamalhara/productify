@@ -40,7 +40,7 @@ export const createProduct = async (data) => {
 
 export const getAllProducts = async () => {
   return db.query.product.findMany({
-    with: { user: true },
+    with: { user: true, comment: true },
     orderBy: (product, { desc }) => [desc(product.createdAt)],
   });
 };
@@ -48,7 +48,7 @@ export const getAllProducts = async () => {
 export const getProductById = async (id) => {
   return db.query.product.findFirst({
     where: eq(product.id, id),
-    with: { user: true },
+    with: { user: true, comment: { with: { user: true } } },
   });
 };
 

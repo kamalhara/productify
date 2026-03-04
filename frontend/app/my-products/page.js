@@ -74,9 +74,9 @@ export default function MyProductsPage() {
           {products.map((product) => (
             <div
               key={product.id}
-              className="card bg-base-200 shadow-md hover:shadow-lg transition-all duration-300 animate-fadeIn"
+              className="card bg-base-100 border border-base-300 hover:shadow-lg transition-all duration-300 animate-fadeIn"
             >
-              <figure className="relative h-40 overflow-hidden">
+              <figure className="relative h-40 overflow-hidden bg-base-200">
                 <Image
                   src={product.imageUrl}
                   alt={product.title}
@@ -89,7 +89,7 @@ export default function MyProductsPage() {
                 <h2 className="card-title text-base font-bold line-clamp-1">
                   {product.title}
                 </h2>
-                <p className="text-sm opacity-70 line-clamp-2">
+                <p className="text-sm text-base-content/70 line-clamp-2">
                   {product.description}
                 </p>
                 <div className="card-actions justify-end mt-3 pt-3 border-t border-base-300">
