@@ -10,12 +10,34 @@ import commentRoutes from "./routes/commentRoutes.js";
 
 const app = express();
 
-app.use(
-  cors({
-    origin: ENV.FRONTEND_URL,
-    credentials: true,
-  }),
-);
+// CORS configuration that works for local testing and Vercel deployment
+const corsOptions = {
+  origin: function (origin, callback) {
+    const allowedPatterns = [
+      /^http:\/\/localhost:\d+$/, // Allow any localhost port
+      /^http:\/\/127\.0\.0\.1:\d+$/, // Allow 127.0.0.1
+      /\.vercel\.app$/, // Allow any Vercel URL
+      ENV.FRONTEND_URL, // Allow env-configured frontend URL
+    ];
+
+    if (
+      !origin ||
+      allowedPatterns.some((pattern) => {
+        if (pattern instanceof RegExp) {
+          return pattern.test(origin);
+        }
+        return origin === pattern;
+      })
+    ) {
+      callback(null, true);
+    } else {
+      callback(new Error("Not allowed by CORS"));
+    }
+  },
+  credentials: true,
+};
+
+app.use(cors(corsOptions));
 app.use(clerkMiddleware());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -35,6 +57,8 @@ app.use("/api/user", userRoutes);
 app.use("/api/product", productRoutes);
 app.use("/api/comment", commentRoutes);
 
-app.listen(ENV.PORT, () => {
-  console.log(`Server is running on port ${ENV.PORT}`);
+const PORT = process.env.PORT || ENV.PORT || 5000;
+
+app.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}`);
 });
