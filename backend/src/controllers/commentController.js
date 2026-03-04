@@ -10,9 +10,9 @@ export const createComment = async (req, res) => {
     }
 
     const { content } = req.body;
-    const { productId } = req.params;
+    const productId = parseInt(req.params.productId);
 
-    if (!content || !productId) {
+    if (!content || !productId || isNaN(productId)) {
       return res
         .status(400)
         .json({ error: "Content and product id are required" });
@@ -43,7 +43,7 @@ export const deleteComment = async (req, res) => {
     if (!userId) {
       return res.status(401).json({ error: "Unauthorized" });
     }
-    const { commentId: id } = req.params;
+    const id = parseInt(req.params.commentId);
 
     const existingComment = await queries.getCommentById(id);
 

@@ -1,13 +1,14 @@
 const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3001";
 
 async function fetchAPI(endpoint, options = {}) {
+  const { headers: optHeaders, ...restOptions } = options;
   const res = await fetch(`${API_URL}${endpoint}`, {
     credentials: "include",
+    ...restOptions,
     headers: {
       "Content-Type": "application/json",
-      ...options.headers,
+      ...optHeaders,
     },
-    ...options,
   });
 
   if (!res.ok) {

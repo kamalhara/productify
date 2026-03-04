@@ -14,7 +14,7 @@ export const getAllProducts = async (req, res) => {
 
 export const getProductById = async (req, res) => {
   try {
-    const { id } = req.params;
+    const id = parseInt(req.params.id);
     const product = await queries.getProductById(id);
     res.status(200).json(product);
   } catch (err) {
@@ -82,7 +82,7 @@ export const updateProduct = async (req, res) => {
     if (!userId) {
       return res.status(401).json({ error: "Unauthorized" });
     }
-    const { id } = req.params;
+    const id = parseInt(req.params.id);
 
     const { title, description, imageUrl } = req.body;
 
@@ -125,7 +125,7 @@ export const deleteProduct = async (req, res) => {
     if (!userId) {
       return res.status(401).json({ error: "Unauthorized" });
     }
-    const { id } = req.params;
+    const id = parseInt(req.params.id);
 
     const existingProduct = await queries.getProductById(id);
 
