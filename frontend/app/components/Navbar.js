@@ -11,11 +11,11 @@ export default function Navbar() {
 
   return (
     <header className="sticky top-0 z-50 bg-surface-white border-b border-border-default">
-      <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 lg:px-8">
+      <div className="mx-auto flex h-14 xs:h-16 max-w-7xl items-center justify-between px-3 xs:px-4 lg:px-8">
         {/* Logo */}
         <Link
           href="/"
-          className="text-xl font-extrabold tracking-tight text-text-primary uppercase"
+          className="text-lg xs:text-xl font-extrabold tracking-tight text-text-primary uppercase shrink-0"
         >
           PRODUCTIFY
         </Link>
@@ -47,17 +47,17 @@ export default function Navbar() {
         </nav>
 
         {/* Right side */}
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2 xs:gap-3">
           {isSignedIn ? (
             <UserButton
               afterSignOutUrl="/"
               appearance={{
-                elements: { avatarBox: "w-9 h-9" },
+                elements: { avatarBox: "w-8 xs:w-9 h-8 xs:h-9" },
               }}
             />
           ) : (
             <SignInButton mode="modal">
-              <button className="px-6 py-2.5 text-sm font-medium bg-surface-dark text-text-light rounded-full hover:bg-surface-dark-soft transition-colors duration-200 cursor-pointer">
+              <button className="px-4 xs:px-6 py-1.5 xs:py-2.5 text-xs xs:text-sm font-medium bg-surface-dark text-text-light rounded-full hover:bg-surface-dark-soft transition-colors duration-200 cursor-pointer whitespace-nowrap">
                 Sign In
               </button>
             </SignInButton>
@@ -65,7 +65,7 @@ export default function Navbar() {
 
           {/* Mobile hamburger */}
           <button
-            className="lg:hidden p-2 text-text-secondary hover:text-text-primary transition-colors duration-200 cursor-pointer"
+            className="lg:hidden p-1.5 xs:p-2 text-text-secondary hover:text-text-primary transition-colors duration-200 cursor-pointer"
             onClick={() => setMenuOpen(!menuOpen)}
             aria-label="Toggle menu"
           >

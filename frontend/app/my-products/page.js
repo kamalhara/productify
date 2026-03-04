@@ -41,15 +41,15 @@ export default function MyProductsPage() {
   };
 
   return (
-    <div className="max-w-7xl mx-auto px-4 lg:px-8 py-8 animate-slideUp">
+    <div className="max-w-7xl mx-auto px-4 lg:px-8 py-4 xs:py-6 md:py-8 animate-slideUp">
       {/* Header */}
-      <div className="flex items-center justify-between mb-10">
-        <h1 className="heading-display text-3xl md:text-4xl text-text-primary">
+      <div className="flex flex-col xs:flex-row xs:items-center xs:justify-between gap-4 xs:gap-0 mb-8 xs:mb-10">
+        <h1 className="heading-display text-2xl xs:text-3xl md:text-4xl text-text-primary">
           MY PRODUCTS
         </h1>
         <Link
           href="/create"
-          className="inline-flex items-center gap-2 px-6 py-3 text-sm font-medium bg-surface-dark text-text-light rounded-full hover:bg-surface-dark-soft transition-colors duration-200"
+          className="inline-flex items-center justify-center gap-2 px-4 xs:px-6 py-2 xs:py-3 text-xs xs:text-sm font-medium bg-surface-dark text-text-light rounded-full hover:bg-surface-dark-soft transition-colors duration-200 w-full xs:w-auto"
         >
           <Plus className="w-4 h-4" />
           New Product
@@ -58,26 +58,28 @@ export default function MyProductsPage() {
 
       {/* Content */}
       {loading ? (
-        <div className="flex justify-center py-24">
+        <div className="flex justify-center py-20 xs:py-24">
           <div className="spinner w-8 h-8" />
         </div>
       ) : products.length === 0 ? (
-        <div className="text-center py-24">
-          <Package className="w-12 h-12 mx-auto mb-4 text-text-muted" />
-          <p className="text-lg text-text-secondary">No products yet</p>
-          <p className="text-sm text-text-muted mt-1 mb-6">
+        <div className="text-center py-20 xs:py-24">
+          <Package className="w-10 xs:w-12 h-10 xs:h-12 mx-auto mb-3 xs:mb-4 text-text-muted" />
+          <p className="text-base xs:text-lg text-text-secondary">
+            No products yet
+          </p>
+          <p className="text-xs xs:text-sm text-text-muted mt-1 mb-4 xs:mb-6">
             Create your first product to get started!
           </p>
           <Link
             href="/create"
-            className="inline-flex items-center gap-2 px-6 py-3 text-sm font-medium bg-surface-dark text-text-light rounded-full hover:bg-surface-dark-soft transition-colors duration-200"
+            className="inline-flex items-center gap-2 px-4 xs:px-6 py-2 xs:py-3 text-xs xs:text-sm font-medium bg-surface-dark text-text-light rounded-full hover:bg-surface-dark-soft transition-colors duration-200"
           >
             <Plus className="w-4 h-4" />
             Create Product
           </Link>
         </div>
       ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
+        <div className="grid grid-cols-1 xs:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-4 xs:gap-5 md:gap-6 lg:gap-8">
           {products.map((product) => (
             <div key={product.id} className="group animate-fadeIn">
               {/* Image */}

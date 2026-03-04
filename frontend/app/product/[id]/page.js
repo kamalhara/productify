@@ -61,17 +61,17 @@ export default function ProductDetailPage() {
   const isOwner = isSignedIn && userId === product.userId;
 
   return (
-    <div className="max-w-4xl mx-auto px-4 py-8 animate-slideUp">
+    <div className="max-w-4xl mx-auto px-4 py-4 xs:py-6 md:py-8 animate-slideUp">
       <Link
         href="/"
-        className="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-text-secondary hover:text-text-primary transition-colors duration-200 mb-6"
+        className="inline-flex items-center gap-2 px-3 xs:px-4 py-1.5 xs:py-2 text-xs xs:text-sm font-medium text-text-secondary hover:text-text-primary transition-colors duration-200 mb-4 xs:mb-6"
       >
-        <ArrowLeft className="w-4 h-4" />
+        <ArrowLeft className="w-3.5 xs:w-4 h-3.5 xs:h-4" />
         Back
       </Link>
 
       {/* Product Image */}
-      <div className="relative aspect-video rounded-3xl overflow-hidden mb-8 bg-surface-card">
+      <div className="relative aspect-video rounded-2xl xs:rounded-3xl overflow-hidden mb-6 xs:mb-8 bg-surface-card">
         <Image
           src={product.imageUrl}
           alt={product.title}
@@ -82,29 +82,29 @@ export default function ProductDetailPage() {
       </div>
 
       {/* Product Info */}
-      <div className="space-y-5 mb-10">
-        <div className="flex items-start justify-between gap-4">
-          <h1 className="text-3xl md:text-4xl font-bold text-text-primary">
+      <div className="space-y-3 xs:space-y-5 mb-8 xs:mb-10">
+        <div className="flex items-start justify-between gap-3 xs:gap-4 flex-col xs:flex-row">
+          <h1 className="text-2xl xs:text-3xl md:text-4xl font-bold text-text-primary">
             {product.title}
           </h1>
           {isOwner && (
-            <div className="flex gap-2 shrink-0">
+            <div className="flex gap-2 shrink-0 w-full xs:w-auto">
               <Link
                 href={`/product/${id}/edit`}
-                className="inline-flex items-center gap-1.5 px-4 py-2.5 text-sm font-medium text-text-primary bg-surface-white border border-border-default rounded-full hover:bg-surface-card transition-colors duration-200"
+                className="flex-1 xs:flex-none inline-flex items-center justify-center xs:justify-start gap-1.5 px-3 xs:px-4 py-2 xs:py-2.5 text-xs xs:text-sm font-medium text-text-primary bg-surface-white border border-border-default rounded-full hover:bg-surface-card transition-colors duration-200"
               >
-                <Edit className="w-3.5 h-3.5" />
+                <Edit className="w-3 xs:w-3.5 h-3 xs:h-3.5" />
                 Edit
               </Link>
               <button
                 onClick={handleDelete}
-                className="inline-flex items-center gap-1.5 px-4 py-2.5 text-sm font-medium text-white bg-danger rounded-full hover:bg-danger-hover disabled:opacity-40 transition-colors duration-200 cursor-pointer"
+                className="flex-1 xs:flex-none inline-flex items-center justify-center xs:justify-start gap-1.5 px-3 xs:px-4 py-2 xs:py-2.5 text-xs xs:text-sm font-medium text-white bg-danger rounded-full hover:bg-danger-hover disabled:opacity-40 transition-colors duration-200 cursor-pointer"
                 disabled={deleting}
               >
                 {deleting ? (
-                  <div className="spinner w-3.5 h-3.5 border-white/30 border-t-white" />
+                  <div className="spinner w-3 xs:w-3.5 h-3 xs:h-3.5 border-white/30 border-t-white" />
                 ) : (
-                  <Trash2 className="w-3.5 h-3.5" />
+                  <Trash2 className="w-3 xs:w-3.5 h-3 xs:h-3.5" />
                 )}
                 Delete
               </button>
@@ -113,7 +113,7 @@ export default function ProductDetailPage() {
         </div>
 
         {/* Author & Date */}
-        <div className="flex items-center gap-4">
+        <div className="flex flex-col xs:flex-row xs:items-center gap-2 xs:gap-4">
           {product.user && (
             <div className="flex items-center gap-2.5">
               <div className="w-8 h-8 rounded-full overflow-hidden bg-surface-card shrink-0">
@@ -125,26 +125,26 @@ export default function ProductDetailPage() {
                   className="w-full h-full object-cover"
                 />
               </div>
-              <span className="text-sm font-medium text-text-primary">
+              <span className="text-xs xs:text-sm font-medium text-text-primary">
                 {product.user.name}
               </span>
             </div>
           )}
           {product.createdAt && (
             <div className="flex items-center gap-1.5 text-xs text-text-muted">
-              <Calendar className="w-3.5 h-3.5" />
+              <Calendar className="w-3 xs:w-3.5 h-3 xs:h-3.5" />
               {new Date(product.createdAt).toLocaleDateString()}
             </div>
           )}
         </div>
 
-        <p className="text-base text-text-secondary leading-relaxed whitespace-pre-wrap">
+        <p className="text-sm xs:text-base text-text-secondary leading-relaxed whitespace-pre-wrap">
           {product.description}
         </p>
       </div>
 
       {/* Divider */}
-      <div className="divider-line my-8" />
+      <div className="divider-line my-6 xs:my-8" />
 
       {/* Comments */}
       <CommentSection productId={product.id} comments={product.comment || []} />
