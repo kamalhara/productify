@@ -57,51 +57,57 @@ export default function CommentSection({
 
   return (
     <div className="space-y-6">
-      <h3 className="text-lg font-bold">Comments ({comments.length})</h3>
+      <h3 className="text-xl font-bold text-text-primary">
+        Comments{" "}
+        <span className="text-text-muted font-normal">({comments.length})</span>
+      </h3>
 
       {/* Comment list */}
-      <div className="space-y-4">
+      <div className="space-y-3">
         {comments.length === 0 && (
-          <p className="text-sm opacity-50 italic">
-            No comments yet. Be the first to share your thoughts!
-          </p>
+          <div className="text-center py-10">
+            <p className="text-sm text-text-muted">
+              No comments yet. Be the first to share your thoughts!
+            </p>
+          </div>
         )}
         {comments.map((comment) => (
           <div
             key={comment.id}
-            className="flex gap-3 p-4 bg-base-200 rounded-xl animate-fadeIn"
+            className="flex gap-3 p-4 bg-surface-white rounded-2xl animate-fadeIn"
           >
-            <div className="avatar flex-shrink-0">
-              <div className="w-8 h-8 rounded-full">
-                {comment.user?.imageUrl ? (
-                  <Image
-                    src={comment.user.imageUrl}
-                    alt={comment.user.name || "User"}
-                    width={32}
-                    height={32}
-                  />
-                ) : (
-                  <div className="bg-primary text-primary-content flex items-center justify-center w-full h-full text-xs font-bold">
-                    {(comment.user?.name || "U")[0]}
-                  </div>
-                )}
-              </div>
+            <div className="w-9 h-9 rounded-full overflow-hidden shrink-0 bg-surface-card">
+              {comment.user?.imageUrl ? (
+                <Image
+                  src={comment.user.imageUrl}
+                  alt={comment.user.name || "User"}
+                  width={36}
+                  height={36}
+                  className="w-full h-full object-cover"
+                />
+              ) : (
+                <div className="w-full h-full flex items-center justify-center bg-text-primary text-text-light text-xs font-bold">
+                  {(comment.user?.name || "U")[0]}
+                </div>
+              )}
             </div>
             <div className="flex-1 min-w-0">
               <div className="flex items-center justify-between">
-                <span className="text-sm font-semibold">
+                <span className="text-sm font-semibold text-text-primary">
                   {comment.user?.name || "Anonymous"}
                 </span>
                 {isSignedIn && user?.id === comment.userId && (
                   <button
                     onClick={() => handleDelete(comment.id)}
-                    className="btn btn-ghost btn-xs text-error"
+                    className="p-1.5 text-text-muted hover:text-danger rounded-lg transition-colors duration-200 cursor-pointer"
                   >
                     <Trash2 className="w-3.5 h-3.5" />
                   </button>
                 )}
               </div>
-              <p className="text-sm opacity-80 mt-1">{comment.content}</p>
+              <p className="text-sm text-text-secondary mt-1 leading-relaxed">
+                {comment.content}
+              </p>
             </div>
           </div>
         ))}
@@ -109,31 +115,31 @@ export default function CommentSection({
 
       {/* Add comment form */}
       {isSignedIn ? (
-        <form onSubmit={handleSubmit} className="flex gap-2">
+        <form onSubmit={handleSubmit} className="flex gap-3">
           <input
             type="text"
             placeholder="Write a comment..."
-            className="input input-bordered flex-1"
+            className="flex-1 px-5 py-3 text-sm bg-surface-white border border-border-default rounded-full text-text-primary placeholder-text-muted focus:border-text-primary focus:outline-none transition-colors duration-200"
             value={content}
             onChange={(e) => setContent(e.target.value)}
             disabled={loading}
           />
           <button
             type="submit"
-            className="btn btn-primary btn-square"
+            className="px-5 py-3 bg-surface-dark text-text-light rounded-full hover:bg-surface-dark-soft disabled:opacity-40 disabled:cursor-not-allowed transition-colors duration-200 cursor-pointer"
             disabled={loading || !content.trim()}
           >
             {loading ? (
-              <span className="loading loading-spinner loading-sm"></span>
+              <div className="spinner w-4 h-4 border-white/30 border-t-white" />
             ) : (
               <Send className="w-4 h-4" />
             )}
           </button>
         </form>
       ) : (
-        <p className="text-sm opacity-60 text-center py-4 bg-base-200 rounded-xl">
-          Sign in to leave a comment
-        </p>
+        <div className="text-center py-6 px-4 bg-surface-white rounded-2xl">
+          <p className="text-sm text-text-muted">Sign in to leave a comment</p>
+        </div>
       )}
     </div>
   );

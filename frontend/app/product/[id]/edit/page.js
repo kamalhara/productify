@@ -39,7 +39,7 @@ export default function EditProductPage() {
   if (loading) {
     return (
       <div className="flex justify-center items-center min-h-[60vh]">
-        <span className="loading loading-spinner loading-lg text-primary"></span>
+        <div className="spinner w-8 h-8" />
       </div>
     );
   }
@@ -48,14 +48,19 @@ export default function EditProductPage() {
 
   return (
     <div className="max-w-2xl mx-auto px-4 py-8 animate-slideUp">
-      <Link href={`/product/${id}`} className="btn btn-ghost btn-sm gap-2 mb-6">
+      <Link
+        href={`/product/${id}`}
+        className="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-text-secondary hover:text-text-primary transition-colors duration-200 mb-6"
+      >
         <ArrowLeft className="w-4 h-4" />
         Back to Product
       </Link>
 
-      <h1 className="text-3xl font-bold mb-8">Edit Product</h1>
+      <h1 className="heading-display text-3xl md:text-4xl mb-8 text-text-primary">
+        EDIT PRODUCT
+      </h1>
 
-      <div className="bg-base-200 p-6 md:p-8 rounded-2xl">
+      <div className="bg-surface-white p-6 md:p-8 rounded-3xl">
         <ProductForm product={product} isEditing />
       </div>
     </div>

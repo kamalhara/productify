@@ -48,51 +48,54 @@ export default function ProductForm({ product, isEditing = false }) {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-6">
-      <div className="form-control">
-        <label className="label">
-          <span className="label-text font-semibold">Product Title</span>
+    <form onSubmit={handleSubmit} className="space-y-5">
+      {/* Title */}
+      <div className="space-y-2">
+        <label className="block text-sm font-semibold text-text-primary">
+          Product Title
         </label>
         <input
           type="text"
           name="title"
           placeholder="Enter product title"
-          className="input input-bordered w-full"
+          className="w-full px-5 py-3.5 text-sm bg-surface-input border border-border-default rounded-xl text-text-primary placeholder-text-muted focus:border-text-primary focus:outline-none transition-colors duration-200"
           value={formData.title}
           onChange={handleChange}
         />
       </div>
 
-      <div className="form-control">
-        <label className="label">
-          <span className="label-text font-semibold">Description</span>
+      {/* Description */}
+      <div className="space-y-2">
+        <label className="block text-sm font-semibold text-text-primary">
+          Description
         </label>
         <textarea
           name="description"
           placeholder="Describe your product..."
-          className="textarea textarea-bordered w-full h-32 resize-none"
+          className="w-full px-5 py-3.5 text-sm bg-surface-input border border-border-default rounded-xl text-text-primary placeholder-text-muted focus:border-text-primary focus:outline-none transition-colors duration-200 resize-none h-32 leading-relaxed"
           value={formData.description}
           onChange={handleChange}
         />
       </div>
 
-      <div className="form-control">
-        <label className="label">
-          <span className="label-text font-semibold">Image URL</span>
+      {/* Image URL */}
+      <div className="space-y-2">
+        <label className="block text-sm font-semibold text-text-primary">
+          Image URL
         </label>
         <input
           type="url"
           name="imageUrl"
           placeholder="https://example.com/image.png"
-          className="input input-bordered w-full"
+          className="w-full px-5 py-3.5 text-sm bg-surface-input border border-border-default rounded-xl text-text-primary placeholder-text-muted focus:border-text-primary focus:outline-none transition-colors duration-200"
           value={formData.imageUrl}
           onChange={handleChange}
         />
       </div>
 
       {/* Image preview */}
-      {formData.imageUrl && (
-        <div className="rounded-xl overflow-hidden border border-base-300 relative h-48 bg-base-200">
+      {formData.imageUrl ? (
+        <div className="rounded-2xl overflow-hidden relative aspect-video bg-surface-card">
           <img
             src={formData.imageUrl}
             alt="Preview"
@@ -100,22 +103,21 @@ export default function ProductForm({ product, isEditing = false }) {
             onError={(e) => (e.target.style.display = "none")}
           />
         </div>
-      )}
-
-      {!formData.imageUrl && (
-        <div className="rounded-xl border-2 border-dashed border-base-300 h-48 flex flex-col items-center justify-center opacity-40">
+      ) : (
+        <div className="rounded-2xl bg-surface-card aspect-video flex flex-col items-center justify-center text-text-muted">
           <ImageIcon className="w-10 h-10 mb-2" />
           <p className="text-sm">Image preview will appear here</p>
         </div>
       )}
 
+      {/* Submit */}
       <button
         type="submit"
-        className="btn btn-primary w-full"
+        className="w-full py-4 text-sm font-semibold bg-surface-dark text-text-light rounded-full hover:bg-surface-dark-soft disabled:opacity-40 disabled:cursor-not-allowed transition-colors duration-200 cursor-pointer"
         disabled={loading}
       >
         {loading ? (
-          <span className="loading loading-spinner loading-sm"></span>
+          <div className="spinner w-5 h-5 mx-auto border-white/30 border-t-white" />
         ) : isEditing ? (
           "Update Product"
         ) : (
