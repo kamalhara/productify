@@ -6,20 +6,22 @@ import { MessageCircle } from "lucide-react";
 
 export default function ProductCard({ product }) {
   return (
-    <Link href={`/product/${product.id}`} className="group block">
+    <Link href={`/product/${product.id}`} className="group block card-hover">
       {/* Image */}
       <div className="relative aspect-square rounded-2xl overflow-hidden bg-surface-card mb-3">
         <Image
           src={product.imageUrl}
           alt={product.title}
           fill
-          className="object-cover group-hover:scale-105 transition-transform duration-500"
+          className="object-cover group-hover:scale-105 transition-transform duration-500 ease-out"
           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
         />
+        {/* Subtle overlay on hover */}
+        <div className="absolute inset-0 bg-black/0 group-hover:bg-black/5 transition-colors duration-300" />
       </div>
 
       {/* Title */}
-      <h3 className="text-base font-bold text-text-primary mb-1 line-clamp-1">
+      <h3 className="text-base font-bold text-text-primary mb-1 line-clamp-1 group-hover:text-text-secondary transition-colors duration-200">
         {product.title}
       </h3>
 
@@ -32,7 +34,7 @@ export default function ProductCard({ product }) {
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
           {product.user?.imageUrl && (
-            <div className="w-6 h-6 rounded-full overflow-hidden shrink-0">
+            <div className="w-6 h-6 rounded-full overflow-hidden shrink-0 ring-2 ring-surface-card">
               <Image
                 src={product.user.imageUrl}
                 alt={product.user.name || "User"}

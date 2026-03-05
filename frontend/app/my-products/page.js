@@ -8,6 +8,22 @@ import Image from "next/image";
 import { getMyProducts, deleteProduct } from "../lib/api";
 import toast from "react-hot-toast";
 
+/* ── Skeleton Card ── */
+function SkeletonCard() {
+  return (
+    <div className="animate-scaleIn">
+      <div className="skeleton skeleton-card aspect-square mb-3" />
+      <div className="skeleton skeleton-text-lg w-3/4 mb-2" />
+      <div className="skeleton skeleton-text w-full mb-1.5" />
+      <div className="skeleton skeleton-text w-2/3 mb-4" />
+      <div className="flex gap-2">
+        <div className="skeleton flex-1 h-9 rounded-full" />
+        <div className="skeleton flex-1 h-9 rounded-full" />
+      </div>
+    </div>
+  );
+}
+
 export default function MyProductsPage() {
   const { getToken } = useAuth();
   const [products, setProducts] = useState([]);
@@ -49,7 +65,7 @@ export default function MyProductsPage() {
         </h1>
         <Link
           href="/create"
-          className="inline-flex items-center justify-center gap-2 px-4 xs:px-6 py-2 xs:py-3 text-xs xs:text-sm font-medium bg-surface-dark text-text-light rounded-full hover:bg-surface-dark-soft transition-colors duration-200 w-full xs:w-auto"
+          className="group inline-flex items-center justify-center gap-2 px-4 xs:px-6 py-2 xs:py-3 text-xs xs:text-sm font-medium bg-surface-dark text-text-light rounded-full hover:bg-surface-dark-soft transition-all duration-200 w-full xs:w-auto hover:shadow-md hover:shadow-black/10"
         >
           <Plus className="w-4 h-4" />
           New Product
@@ -58,13 +74,17 @@ export default function MyProductsPage() {
 
       {/* Content */}
       {loading ? (
-        <div className="flex justify-center py-20 xs:py-24">
-          <div className="spinner w-8 h-8" />
+        <div className="grid grid-cols-1 xs:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-4 xs:gap-5 md:gap-6 lg:gap-8 stagger-children">
+          {[...Array(6)].map((_, i) => (
+            <SkeletonCard key={i} />
+          ))}
         </div>
       ) : products.length === 0 ? (
         <div className="text-center py-20 xs:py-24">
-          <Package className="w-10 xs:w-12 h-10 xs:h-12 mx-auto mb-3 xs:mb-4 text-text-muted" />
-          <p className="text-base xs:text-lg text-text-secondary">
+          <div className="w-16 h-16 mx-auto mb-5 rounded-2xl bg-surface-card flex items-center justify-center">
+            <Package className="w-8 h-8 text-text-muted" />
+          </div>
+          <p className="text-base xs:text-lg font-semibold text-text-primary">
             No products yet
           </p>
           <p className="text-xs xs:text-sm text-text-muted mt-1 mb-4 xs:mb-6">
@@ -79,9 +99,9 @@ export default function MyProductsPage() {
           </Link>
         </div>
       ) : (
-        <div className="grid grid-cols-1 xs:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-4 xs:gap-5 md:gap-6 lg:gap-8">
+        <div className="grid grid-cols-1 xs:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-4 xs:gap-5 md:gap-6 lg:gap-8 stagger-children">
           {products.map((product) => (
-            <div key={product.id} className="group animate-fadeIn">
+            <div key={product.id} className="group animate-fadeIn card-hover">
               {/* Image */}
               <Link href={`/product/${product.id}`}>
                 <div className="relative aspect-square rounded-2xl overflow-hidden bg-surface-card mb-3">
@@ -89,15 +109,16 @@ export default function MyProductsPage() {
                     src={product.imageUrl}
                     alt={product.title}
                     fill
-                    className="object-cover group-hover:scale-105 transition-transform duration-500"
+                    className="object-cover group-hover:scale-105 transition-transform duration-500 ease-out"
                     sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                   />
+                  <div className="absolute inset-0 bg-black/0 group-hover:bg-black/5 transition-colors duration-300" />
                 </div>
               </Link>
 
               {/* Content */}
               <Link href={`/product/${product.id}`}>
-                <h2 className="text-base font-bold text-text-primary mb-1 line-clamp-1 hover:underline">
+                <h2 className="text-base font-bold text-text-primary mb-1 line-clamp-1 hover:text-text-secondary transition-colors duration-200">
                   {product.title}
                 </h2>
               </Link>
@@ -109,14 +130,14 @@ export default function MyProductsPage() {
               <div className="flex gap-2">
                 <Link
                   href={`/product/${product.id}/edit`}
-                  className="flex-1 inline-flex items-center justify-center gap-1.5 py-2.5 text-xs font-medium bg-surface-white border border-border-default text-text-primary rounded-full hover:bg-surface-card transition-colors duration-200"
+                  className="flex-1 inline-flex items-center justify-center gap-1.5 py-2.5 text-xs font-medium bg-surface-white border border-border-default text-text-primary rounded-full hover:bg-surface-card transition-all duration-200 hover:shadow-sm"
                 >
                   <Edit className="w-3.5 h-3.5" />
                   Edit
                 </Link>
                 <button
                   onClick={() => handleDelete(product.id)}
-                  className="flex-1 inline-flex items-center justify-center gap-1.5 py-2.5 text-xs font-medium bg-surface-white border border-border-default text-text-primary rounded-full hover:bg-red-50 hover:text-danger hover:border-danger transition-colors duration-200 cursor-pointer"
+                  className="flex-1 inline-flex items-center justify-center gap-1.5 py-2.5 text-xs font-medium bg-surface-white border border-border-default text-text-primary rounded-full hover:bg-red-50 hover:text-danger hover:border-danger transition-all duration-200 cursor-pointer"
                 >
                   <Trash2 className="w-3.5 h-3.5" />
                   Delete

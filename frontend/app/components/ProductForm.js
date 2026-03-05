@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 "use client";
 
 import { useState } from "react";
@@ -96,6 +97,7 @@ export default function ProductForm({ product, isEditing = false }) {
       {/* Image preview */}
       {formData.imageUrl ? (
         <div className="rounded-2xl overflow-hidden relative aspect-video bg-surface-card">
+
           <img
             src={formData.imageUrl}
             alt="Preview"

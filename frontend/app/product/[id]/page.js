@@ -10,6 +10,29 @@ import { getProductById, deleteProduct } from "../../lib/api";
 import CommentSection from "../../components/CommentSection";
 import toast from "react-hot-toast";
 
+/* ── Skeleton Loader ── */
+function ProductDetailSkeleton() {
+  return (
+    <div className="max-w-4xl mx-auto px-4 py-4 xs:py-6 md:py-8 animate-slideUp">
+      <div className="skeleton w-20 h-8 rounded-lg mb-4 xs:mb-6" />
+      <div className="skeleton aspect-video rounded-2xl xs:rounded-3xl mb-6 xs:mb-8" />
+      <div className="space-y-4">
+        <div className="skeleton skeleton-text-lg w-2/3 h-8" />
+        <div className="flex items-center gap-3">
+          <div className="skeleton skeleton-circle w-8 h-8" />
+          <div className="skeleton skeleton-text w-24" />
+          <div className="skeleton skeleton-text w-20" />
+        </div>
+        <div className="space-y-2">
+          <div className="skeleton skeleton-text w-full" />
+          <div className="skeleton skeleton-text w-full" />
+          <div className="skeleton skeleton-text w-3/4" />
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export default function ProductDetailPage() {
   const { id } = useParams();
   const { getToken, userId } = useAuth();
@@ -49,11 +72,7 @@ export default function ProductDetailPage() {
   };
 
   if (loading) {
-    return (
-      <div className="flex justify-center items-center min-h-[60vh]">
-        <div className="spinner w-8 h-8" />
-      </div>
-    );
+    return <ProductDetailSkeleton />;
   }
 
   if (!product) return null;
@@ -64,14 +83,14 @@ export default function ProductDetailPage() {
     <div className="max-w-4xl mx-auto px-4 py-4 xs:py-6 md:py-8 animate-slideUp">
       <Link
         href="/"
-        className="inline-flex items-center gap-2 px-3 xs:px-4 py-1.5 xs:py-2 text-xs xs:text-sm font-medium text-text-secondary hover:text-text-primary transition-colors duration-200 mb-4 xs:mb-6"
+        className="group inline-flex items-center gap-2 px-3 xs:px-4 py-1.5 xs:py-2 text-xs xs:text-sm font-medium text-text-secondary hover:text-text-primary transition-colors duration-200 mb-4 xs:mb-6 rounded-lg hover:bg-surface-card"
       >
-        <ArrowLeft className="w-3.5 xs:w-4 h-3.5 xs:h-4" />
+        <ArrowLeft className="w-3.5 xs:w-4 h-3.5 xs:h-4 transition-transform group-hover:-translate-x-0.5" />
         Back
       </Link>
 
       {/* Product Image */}
-      <div className="relative aspect-video rounded-2xl xs:rounded-3xl overflow-hidden mb-6 xs:mb-8 bg-surface-card">
+      <div className="relative aspect-video rounded-2xl xs:rounded-3xl overflow-hidden mb-6 xs:mb-8 bg-surface-card shadow-sm">
         <Image
           src={product.imageUrl}
           alt={product.title}
@@ -91,14 +110,14 @@ export default function ProductDetailPage() {
             <div className="flex gap-2 shrink-0 w-full xs:w-auto">
               <Link
                 href={`/product/${id}/edit`}
-                className="flex-1 xs:flex-none inline-flex items-center justify-center xs:justify-start gap-1.5 px-3 xs:px-4 py-2 xs:py-2.5 text-xs xs:text-sm font-medium text-text-primary bg-surface-white border border-border-default rounded-full hover:bg-surface-card transition-colors duration-200"
+                className="flex-1 xs:flex-none inline-flex items-center justify-center xs:justify-start gap-1.5 px-3 xs:px-4 py-2 xs:py-2.5 text-xs xs:text-sm font-medium text-text-primary bg-surface-white border border-border-default rounded-full hover:bg-surface-card transition-all duration-200 hover:shadow-sm"
               >
                 <Edit className="w-3 xs:w-3.5 h-3 xs:h-3.5" />
                 Edit
               </Link>
               <button
                 onClick={handleDelete}
-                className="flex-1 xs:flex-none inline-flex items-center justify-center xs:justify-start gap-1.5 px-3 xs:px-4 py-2 xs:py-2.5 text-xs xs:text-sm font-medium text-white bg-danger rounded-full hover:bg-danger-hover disabled:opacity-40 transition-colors duration-200 cursor-pointer"
+                className="flex-1 xs:flex-none inline-flex items-center justify-center xs:justify-start gap-1.5 px-3 xs:px-4 py-2 xs:py-2.5 text-xs xs:text-sm font-medium text-white bg-danger rounded-full hover:bg-danger-hover disabled:opacity-40 transition-all duration-200 cursor-pointer hover:shadow-sm"
                 disabled={deleting}
               >
                 {deleting ? (
@@ -116,7 +135,7 @@ export default function ProductDetailPage() {
         <div className="flex flex-col xs:flex-row xs:items-center gap-2 xs:gap-4">
           {product.user && (
             <div className="flex items-center gap-2.5">
-              <div className="w-8 h-8 rounded-full overflow-hidden bg-surface-card shrink-0">
+              <div className="w-8 h-8 rounded-full overflow-hidden bg-surface-card shrink-0 ring-2 ring-surface-card">
                 <Image
                   src={product.user.imageUrl || "/placeholder.png"}
                   alt={product.user.name || "User"}

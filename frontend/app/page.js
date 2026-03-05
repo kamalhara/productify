@@ -1,11 +1,73 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useAuth, useUser } from "@clerk/nextjs";
-import { Package, ArrowRight, Star, Users, Zap } from "lucide-react";
+import {
+  Package,
+  ArrowRight,
+  Star,
+  Users,
+  Zap,
+  MessageSquare,
+  Sparkles,
+  TrendingUp,
+} from "lucide-react";
 import Link from "next/link";
 import ProductCard from "./components/ProductCard";
 import { getAllProducts, syncUser } from "./lib/api";
+
+/* ── Animated counter component ── */
+function AnimatedCounter({ target, suffix = "+", duration = 1500 }) {
+  const [count, setCount] = useState(0);
+  const [hasAnimated, setHasAnimated] = useState(false);
+  const ref = useRef(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting && !hasAnimated) {
+          setHasAnimated(true);
+          const start = 0;
+          const startTime = performance.now();
+          const animate = (currentTime) => {
+            const elapsed = currentTime - startTime;
+            const progress = Math.min(elapsed / duration, 1);
+            const eased = 1 - Math.pow(1 - progress, 3);
+            setCount(Math.floor(eased * target));
+            if (progress < 1) requestAnimationFrame(animate);
+          };
+          requestAnimationFrame(animate);
+        }
+      },
+      { threshold: 0.5 },
+    );
+    if (ref.current) observer.observe(ref.current);
+    return () => observer.disconnect();
+  }, [target, duration, hasAnimated]);
+
+  return (
+    <span ref={ref}>
+      {count}
+      {suffix}
+    </span>
+  );
+}
+
+/* ── Skeleton Card ── */
+function SkeletonCard() {
+  return (
+    <div className="animate-scaleIn">
+      <div className="skeleton skeleton-card aspect-square mb-3" />
+      <div className="skeleton skeleton-text-lg w-3/4 mb-2" />
+      <div className="skeleton skeleton-text w-full mb-1.5" />
+      <div className="skeleton skeleton-text w-2/3 mb-3" />
+      <div className="flex items-center gap-2">
+        <div className="skeleton skeleton-circle w-6 h-6" />
+        <div className="skeleton skeleton-text w-20" />
+      </div>
+    </div>
+  );
+}
 
 export default function Home() {
   const { getToken, isSignedIn } = useAuth();
@@ -50,12 +112,26 @@ export default function Home() {
     fetchProducts();
   }, []);
 
+  const productCount = products.length > 0 ? products.length : 50;
+
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
-      <section className="bg-surface-white">
-        <div className="max-w-7xl mx-auto px-4 lg:px-8 py-20 lg:py-32 animate-slideUp">
+      <section className="bg-surface-white relative overflow-hidden">
+        {/* Subtle decorative elements */}
+        <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-gradient-to-bl from-blue-50/40 to-transparent rounded-full blur-3xl" />
+        <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-gradient-to-tr from-purple-50/30 to-transparent rounded-full blur-3xl" />
+
+        <div className="max-w-7xl mx-auto px-4 lg:px-8 py-20 lg:py-32 animate-slideUp relative z-10">
           <div className="max-w-4xl">
+            {/* Small badge above heading */}
+            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-surface-card border border-border-default mb-6 xs:mb-8 animate-fadeIn">
+              <Sparkles className="w-3.5 h-3.5 text-text-secondary" />
+              <span className="text-xs font-medium text-text-secondary tracking-wide">
+                DISCOVER & SHARE
+              </span>
+            </div>
+
             <h1 className="heading-display text-3xl xs:text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl leading-[0.95] mb-6 text-text-primary">
               SHARE PRODUCTS
               <br />
@@ -67,52 +143,67 @@ export default function Home() {
               Showcase what you&apos;re building, discover new products, and
               connect with creators through meaningful feedback.
             </p>
-            {!isSignedIn ? (
+            <div className="flex flex-col xs:flex-row gap-3">
+              {!isSignedIn ? (
+                <Link
+                  href="/sign-in"
+                  className="group inline-flex items-center gap-2 px-4 xs:px-6 md:px-8 py-2.5 xs:py-3 md:py-4 text-xs xs:text-sm md:text-base font-medium bg-surface-dark text-text-light rounded-full hover:bg-surface-dark-soft transition-all duration-300 w-full xs:w-auto justify-center xs:justify-start hover:shadow-lg hover:shadow-black/10"
+                >
+                  Get Started
+                  <ArrowRight className="w-4 xs:w-5 h-4 xs:h-5 transition-transform group-hover:translate-x-0.5" />
+                </Link>
+              ) : (
+                <Link
+                  href="/create"
+                  className="group inline-flex items-center gap-2 px-4 xs:px-6 md:px-8 py-2.5 xs:py-3 md:py-4 text-xs xs:text-sm md:text-base font-medium bg-surface-dark text-text-light rounded-full hover:bg-surface-dark-soft transition-all duration-300 w-full xs:w-auto justify-center xs:justify-start hover:shadow-lg hover:shadow-black/10"
+                >
+                  Share a Product
+                  <ArrowRight className="w-4 xs:w-5 h-4 xs:h-5 transition-transform group-hover:translate-x-0.5" />
+                </Link>
+              )}
               <Link
-                href="/sign-in"
-                className="inline-flex items-center gap-2 px-4 xs:px-6 md:px-8 py-2 xs:py-3 md:py-4 text-xs xs:text-sm md:text-base font-medium bg-surface-dark text-text-light rounded-full hover:bg-surface-dark-soft transition-colors duration-200 w-full xs:w-auto justify-center xs:justify-start"
+                href="#products"
+                className="inline-flex items-center gap-2 px-4 xs:px-6 md:px-8 py-2.5 xs:py-3 md:py-4 text-xs xs:text-sm md:text-base font-medium bg-transparent text-text-primary border border-border-default rounded-full hover:bg-surface-card transition-all duration-300 w-full xs:w-auto justify-center xs:justify-start"
               >
-                Get Started
-                <ArrowRight className="w-4 xs:w-5 h-4 xs:h-5" />
+                Browse Products
               </Link>
-            ) : (
-              <Link
-                href="/create"
-                className="inline-flex items-center gap-2 px-4 xs:px-6 md:px-8 py-2 xs:py-3 md:py-4 text-xs xs:text-sm md:text-base font-medium bg-surface-dark text-text-light rounded-full hover:bg-surface-dark-soft transition-colors duration-200 w-full xs:w-auto justify-center xs:justify-start"
-              >
-                Share a Product
-                <ArrowRight className="w-4 xs:w-5 h-4 xs:h-5" />
-              </Link>
-            )}
+            </div>
           </div>
         </div>
       </section>
 
       {/* Stats Strip */}
-      <section className="bg-surface-dark">
-        <div className="max-w-7xl mx-auto px-4 lg:px-8 py-6 xs:py-8">
-          <div className="grid grid-cols-3 gap-2 xs:gap-4 divide-x divide-white/20">
+      <section className="bg-surface-dark relative overflow-hidden">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_50%,rgba(255,255,255,0.03),transparent)]" />
+        <div className="max-w-7xl mx-auto px-4 lg:px-8 py-7 xs:py-10 relative z-10">
+          <div className="grid grid-cols-3 gap-2 xs:gap-4 divide-x divide-white/10">
             <div className="text-center px-2 xs:px-4">
-              <p className="text-xl xs:text-2xl md:text-3xl lg:text-4xl font-bold text-text-light">
-                {products.length}+
+              <p className="text-xl xs:text-2xl md:text-3xl lg:text-4xl font-bold text-text-light animate-countUp">
+                <AnimatedCounter target={productCount} />
               </p>
-              <p className="text-xs text-white/60 mt-0.5 xs:mt-1 leading-tight">
+              <p className="text-[10px] xs:text-xs text-white/50 mt-1 xs:mt-2 leading-tight uppercase tracking-wider font-medium">
                 Products Shared
               </p>
             </div>
             <div className="text-center px-2 xs:px-4">
-              <p className="text-xl xs:text-2xl md:text-3xl lg:text-4xl font-bold text-text-light">
-                100+
+              <p
+                className="text-xl xs:text-2xl md:text-3xl lg:text-4xl font-bold text-text-light animate-countUp"
+                style={{ animationDelay: "150ms" }}
+              >
+                <AnimatedCounter target={100} />
               </p>
-              <p className="text-xs text-white/60 mt-0.5 xs:mt-1 leading-tight">
+              <p className="text-[10px] xs:text-xs text-white/50 mt-1 xs:mt-2 leading-tight uppercase tracking-wider font-medium">
                 Active Creators
               </p>
             </div>
             <div className="text-center px-2 xs:px-4">
-              <p className="text-xl xs:text-2xl md:text-3xl lg:text-4xl font-bold text-text-light">
-                500+
+              <p
+                className="text-xl xs:text-2xl md:text-3xl lg:text-4xl font-bold text-text-light animate-countUp"
+                style={{ animationDelay: "300ms" }}
+              >
+                <AnimatedCounter target={500} />
               </p>
-              <p className="text-xs text-white/60 mt-0.5 xs:mt-1 leading-tight">
+              <p className="text-[10px] xs:text-xs text-white/50 mt-1 xs:mt-2 leading-tight uppercase tracking-wider font-medium">
                 Feedback Given
               </p>
             </div>
@@ -121,25 +212,42 @@ export default function Home() {
       </section>
 
       {/* Latest Products */}
-      <section className="max-w-7xl mx-auto px-4 lg:px-8 py-8 xs:py-12 md:py-16 lg:py-24">
-        <h2 className="heading-display text-2xl xs:text-3xl md:text-4xl lg:text-5xl text-center mb-8 xs:mb-10 md:mb-12 text-text-primary">
-          LATEST PRODUCTS
-        </h2>
+      <section
+        id="products"
+        className="max-w-7xl mx-auto px-4 lg:px-8 py-8 xs:py-12 md:py-16 lg:py-24"
+      >
+        <div className="flex flex-col items-center mb-8 xs:mb-10 md:mb-14">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-surface-card border border-border-default mb-4">
+            <TrendingUp className="w-3 h-3 text-text-muted" />
+            <span className="text-[10px] xs:text-xs font-medium text-text-muted uppercase tracking-wider">
+              Trending Now
+            </span>
+          </div>
+          <h2 className="heading-display text-2xl xs:text-3xl md:text-4xl lg:text-5xl text-center text-text-primary">
+            LATEST PRODUCTS
+          </h2>
+        </div>
 
         {loading ? (
-          <div className="flex justify-center py-20">
-            <div className="spinner w-8 h-8" />
+          <div className="grid grid-cols-1 xs:grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 xs:gap-4 md:gap-6 lg:gap-8 stagger-children">
+            {[...Array(8)].map((_, i) => (
+              <SkeletonCard key={i} />
+            ))}
           </div>
         ) : products.length === 0 ? (
           <div className="text-center py-20">
-            <Package className="w-12 h-12 mx-auto mb-4 text-text-muted" />
-            <p className="text-lg text-text-secondary">No products yet</p>
+            <div className="w-16 h-16 mx-auto mb-5 rounded-2xl bg-surface-card flex items-center justify-center">
+              <Package className="w-8 h-8 text-text-muted" />
+            </div>
+            <p className="text-lg font-semibold text-text-primary">
+              No products yet
+            </p>
             <p className="text-sm text-text-muted mt-1">
               Be the first to share something!
             </p>
           </div>
         ) : (
-          <div className="grid grid-cols-1 xs:grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 xs:gap-4 md:gap-6 lg:gap-8">
+          <div className="grid grid-cols-1 xs:grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 xs:gap-4 md:gap-6 lg:gap-8 stagger-children">
             {products.map((product) => (
               <div key={product.id} className="animate-fadeIn">
                 <ProductCard product={product} />
@@ -151,12 +259,22 @@ export default function Home() {
 
       {/* Browse Categories / CTA */}
       <section className="max-w-7xl mx-auto px-4 lg:px-8 pb-8 xs:pb-12 md:pb-16 lg:pb-24">
-        <div className="bg-surface-card rounded-2xl xs:rounded-3xl p-6 xs:p-8 md:p-10 lg:p-14">
-          <div className="max-w-2xl mx-auto text-center">
-            <h2 className="heading-display text-2xl xs:text-3xl md:text-4xl lg:text-5xl mb-3 xs:mb-4 text-text-primary">
+        <div className="bg-surface-dark rounded-2xl xs:rounded-3xl p-6 xs:p-8 md:p-10 lg:p-14 relative overflow-hidden">
+          {/* Decorative accents */}
+          <div className="absolute top-0 right-0 w-64 h-64 bg-white/[0.03] rounded-full -translate-y-1/2 translate-x-1/2" />
+          <div className="absolute bottom-0 left-0 w-48 h-48 bg-white/[0.02] rounded-full translate-y-1/2 -translate-x-1/2" />
+
+          <div className="max-w-2xl mx-auto text-center relative z-10">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 mb-5 xs:mb-6">
+              <Sparkles className="w-3 h-3 text-white/60" />
+              <span className="text-[10px] xs:text-xs font-medium text-white/60 uppercase tracking-wider">
+                Join the Community
+              </span>
+            </div>
+            <h2 className="heading-display text-2xl xs:text-3xl md:text-4xl lg:text-5xl mb-3 xs:mb-4 text-text-light">
               READY TO BUILD?
             </h2>
-            <p className="text-xs xs:text-sm md:text-base text-text-secondary mb-6 xs:mb-8 max-w-md mx-auto">
+            <p className="text-xs xs:text-sm md:text-base text-white/60 mb-6 xs:mb-8 max-w-md mx-auto leading-relaxed">
               Join our community of makers and start sharing your creations with
               the world.
             </p>
@@ -164,23 +282,23 @@ export default function Home() {
               {!isSignedIn ? (
                 <Link
                   href="/sign-in"
-                  className="inline-flex items-center gap-2 px-4 xs:px-6 md:px-8 py-2 xs:py-3 md:py-4 text-xs xs:text-sm md:text-base font-medium bg-surface-dark text-text-light rounded-full hover:bg-surface-dark-soft transition-colors duration-200 w-full xs:w-auto justify-center"
+                  className="group inline-flex items-center gap-2 px-4 xs:px-6 md:px-8 py-2.5 xs:py-3 md:py-4 text-xs xs:text-sm md:text-base font-medium bg-text-light text-surface-dark rounded-full hover:bg-white/90 transition-all duration-300 w-full xs:w-auto justify-center hover:shadow-lg hover:shadow-white/10"
                 >
                   Join Now
-                  <ArrowRight className="w-4 xs:w-5 h-4 xs:h-5" />
+                  <ArrowRight className="w-4 xs:w-5 h-4 xs:h-5 transition-transform group-hover:translate-x-0.5" />
                 </Link>
               ) : (
                 <Link
                   href="/create"
-                  className="inline-flex items-center gap-2 px-4 xs:px-6 md:px-8 py-2 xs:py-3 md:py-4 text-xs xs:text-sm md:text-base font-medium bg-surface-dark text-text-light rounded-full hover:bg-surface-dark-soft transition-colors duration-200 w-full xs:w-auto justify-center"
+                  className="group inline-flex items-center gap-2 px-4 xs:px-6 md:px-8 py-2.5 xs:py-3 md:py-4 text-xs xs:text-sm md:text-base font-medium bg-text-light text-surface-dark rounded-full hover:bg-white/90 transition-all duration-300 w-full xs:w-auto justify-center hover:shadow-lg hover:shadow-white/10"
                 >
                   Create Product
-                  <ArrowRight className="w-4 xs:w-5 h-4 xs:h-5" />
+                  <ArrowRight className="w-4 xs:w-5 h-4 xs:h-5 transition-transform group-hover:translate-x-0.5" />
                 </Link>
               )}
               <Link
                 href="/"
-                className="inline-flex items-center gap-2 px-4 xs:px-6 md:px-8 py-2 xs:py-3 md:py-4 text-xs xs:text-sm md:text-base font-medium bg-surface-white text-text-primary border border-border-default rounded-full hover:bg-surface-card transition-colors duration-200 w-full xs:w-auto justify-center"
+                className="inline-flex items-center gap-2 px-4 xs:px-6 md:px-8 py-2.5 xs:py-3 md:py-4 text-xs xs:text-sm md:text-base font-medium bg-transparent text-text-light border border-white/20 rounded-full hover:bg-white/10 transition-all duration-300 w-full xs:w-auto justify-center"
               >
                 Browse Products
               </Link>
@@ -190,14 +308,44 @@ export default function Home() {
       </section>
 
       {/* Footer */}
-      <footer className="border-t border-border-default">
-        <div className="max-w-7xl mx-auto px-4 lg:px-8 py-8">
-          <div className="flex flex-col md:flex-row items-center justify-between gap-4">
-            <p className="text-xl font-extrabold tracking-tight uppercase">
-              PRODUCTIFY
-            </p>
-            <p className="text-sm text-text-muted">
+      <footer className="border-t border-border-default bg-surface-white">
+        <div className="max-w-7xl mx-auto px-4 lg:px-8 py-10 xs:py-12">
+          <div className="flex flex-col md:flex-row items-center justify-between gap-6">
+            <div className="flex flex-col items-center md:items-start gap-2">
+              <p className="text-xl font-extrabold tracking-tight uppercase">
+                PRODUCTIFY
+              </p>
+              <p className="text-xs text-text-muted">
+                Share & discover products that matter.
+              </p>
+            </div>
+            <div className="flex items-center gap-6">
+              <Link
+                href="/"
+                className="text-xs text-text-muted hover:text-text-primary transition-colors"
+              >
+                Home
+              </Link>
+              <Link
+                href="/create"
+                className="text-xs text-text-muted hover:text-text-primary transition-colors"
+              >
+                Create
+              </Link>
+              <Link
+                href="/sign-in"
+                className="text-xs text-text-muted hover:text-text-primary transition-colors"
+              >
+                Sign In
+              </Link>
+            </div>
+          </div>
+          <div className="mt-8 pt-6 border-t border-border-default flex flex-col xs:flex-row items-center justify-between gap-2">
+            <p className="text-xs text-text-muted">
               © 2026 Productify. All rights reserved.
+            </p>
+            <p className="text-[10px] text-text-muted">
+              Built with ♥ for creators
             </p>
           </div>
         </div>
