@@ -38,8 +38,19 @@ export default function EditProductPage() {
 
   if (loading) {
     return (
-      <div className="flex justify-center items-center min-h-[60vh]">
-        <div className="spinner w-8 h-8" />
+      <div className="max-w-2xl mx-auto px-4 py-8 animate-slideUp">
+        <div className="skeleton w-36 h-8 rounded-lg mb-6" />
+        <div className="skeleton w-48 h-10 rounded-lg mb-8" />
+        <div className="bg-surface-white p-6 md:p-8 rounded-3xl space-y-5">
+          <div className="skeleton skeleton-text-lg w-24 mb-2" />
+          <div className="skeleton h-12 rounded-xl" />
+          <div className="skeleton skeleton-text-lg w-20 mb-2" />
+          <div className="skeleton h-32 rounded-xl" />
+          <div className="skeleton skeleton-text-lg w-20 mb-2" />
+          <div className="skeleton h-12 rounded-xl" />
+          <div className="skeleton aspect-video rounded-2xl" />
+          <div className="skeleton h-14 rounded-full" />
+        </div>
       </div>
     );
   }
