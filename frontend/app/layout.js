@@ -3,6 +3,8 @@ import { Geist, Geist_Mono } from "next/font/google";
 import { Outfit, Playfair_Display } from "next/font/google";
 import { Toaster } from "react-hot-toast";
 import Navbar from "./components/Navbar";
+import ProgressBar from "./components/ProgressBar";
+import { ThemeProvider } from "./components/ThemeProvider";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -43,28 +45,43 @@ export default function RootLayout({ children }) {
             href="https://fonts.cdnfonts.com/css/integral-cf"
             rel="stylesheet"
           />
+          <script
+            dangerouslySetInnerHTML={{
+              __html: `
+                try {
+                  const t = localStorage.getItem('productify-theme');
+                  if (t === 'dark' || (!t && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+                    document.documentElement.classList.add('dark');
+                  }
+                } catch(e) {}
+              `,
+            }}
+          />
         </head>
         <body
           className={`${geistSans.variable} ${geistMono.variable} ${outfit.variable} ${playfair.variable} antialiased min-h-screen`}
-          style={{ backgroundColor: "#f2f2f2", color: "#000000" }}
+          style={{ backgroundColor: "var(--bg-body)", color: "var(--fg-body)" }}
           suppressHydrationWarning
         >
-          <Navbar />
-          <main>{children}</main>
-          <Toaster
-            position="bottom-right"
-            toastOptions={{
-              style: {
-                background: "#ffffff",
-                color: "#000000",
-                border: "1px solid #e5e5e5",
-                borderRadius: "100px",
-                fontSize: "14px",
-                fontFamily: "var(--font-outfit), system-ui, sans-serif",
-                padding: "10px 20px",
-              },
-            }}
-          />
+          <ThemeProvider>
+            <ProgressBar />
+            <Navbar />
+            <main>{children}</main>
+            <Toaster
+              position="bottom-right"
+              toastOptions={{
+                style: {
+                  background: "#ffffff",
+                  color: "#000000",
+                  border: "1px solid #e5e5e5",
+                  borderRadius: "100px",
+                  fontSize: "14px",
+                  fontFamily: "var(--font-outfit), system-ui, sans-serif",
+                  padding: "10px 20px",
+                },
+              }}
+            />
+          </ThemeProvider>
         </body>
       </html>
     </ClerkProvider>

@@ -52,14 +52,14 @@ export default function ProductForm({ product, isEditing = false }) {
     <form onSubmit={handleSubmit} className="space-y-5">
       {/* Title */}
       <div className="space-y-2">
-        <label className="block text-sm font-semibold text-text-primary">
+        <label className="block text-sm font-semibold text-text-primary dark:text-white">
           Product Title
         </label>
         <input
           type="text"
           name="title"
           placeholder="Enter product title"
-          className="w-full px-5 py-3.5 text-sm bg-surface-input border border-border-default rounded-xl text-text-primary placeholder-text-muted focus:border-text-primary focus:outline-none transition-colors duration-200"
+          className="w-full px-5 py-3.5 text-sm bg-surface-input dark:bg-neutral-800 border border-border-default dark:border-neutral-700 rounded-xl text-text-primary dark:text-white placeholder-text-muted dark:placeholder-neutral-500 focus:border-text-primary dark:focus:border-neutral-400 focus:outline-none transition-colors duration-200"
           value={formData.title}
           onChange={handleChange}
         />
@@ -67,13 +67,13 @@ export default function ProductForm({ product, isEditing = false }) {
 
       {/* Description */}
       <div className="space-y-2">
-        <label className="block text-sm font-semibold text-text-primary">
+        <label className="block text-sm font-semibold text-text-primary dark:text-white">
           Description
         </label>
         <textarea
           name="description"
           placeholder="Describe your product..."
-          className="w-full px-5 py-3.5 text-sm bg-surface-input border border-border-default rounded-xl text-text-primary placeholder-text-muted focus:border-text-primary focus:outline-none transition-colors duration-200 resize-none h-32 leading-relaxed"
+          className="w-full px-5 py-3.5 text-sm bg-surface-input dark:bg-neutral-800 border border-border-default dark:border-neutral-700 rounded-xl text-text-primary dark:text-white placeholder-text-muted dark:placeholder-neutral-500 focus:border-text-primary dark:focus:border-neutral-400 focus:outline-none transition-colors duration-200 resize-none h-32 leading-relaxed"
           value={formData.description}
           onChange={handleChange}
         />
@@ -81,14 +81,14 @@ export default function ProductForm({ product, isEditing = false }) {
 
       {/* Image URL */}
       <div className="space-y-2">
-        <label className="block text-sm font-semibold text-text-primary">
+        <label className="block text-sm font-semibold text-text-primary dark:text-white">
           Image URL
         </label>
         <input
           type="url"
           name="imageUrl"
           placeholder="https://example.com/image.png"
-          className="w-full px-5 py-3.5 text-sm bg-surface-input border border-border-default rounded-xl text-text-primary placeholder-text-muted focus:border-text-primary focus:outline-none transition-colors duration-200"
+          className="w-full px-5 py-3.5 text-sm bg-surface-input dark:bg-neutral-800 border border-border-default dark:border-neutral-700 rounded-xl text-text-primary dark:text-white placeholder-text-muted dark:placeholder-neutral-500 focus:border-text-primary dark:focus:border-neutral-400 focus:outline-none transition-colors duration-200"
           value={formData.imageUrl}
           onChange={handleChange}
         />
@@ -96,8 +96,7 @@ export default function ProductForm({ product, isEditing = false }) {
 
       {/* Image preview */}
       {formData.imageUrl ? (
-        <div className="rounded-2xl overflow-hidden relative aspect-video bg-surface-card">
-
+        <div className="rounded-2xl overflow-hidden relative aspect-video bg-surface-card dark:bg-neutral-800">
           <img
             src={formData.imageUrl}
             alt="Preview"
@@ -106,7 +105,7 @@ export default function ProductForm({ product, isEditing = false }) {
           />
         </div>
       ) : (
-        <div className="rounded-2xl bg-surface-card aspect-video flex flex-col items-center justify-center text-text-muted">
+        <div className="rounded-2xl bg-surface-card dark:bg-neutral-800 aspect-video flex flex-col items-center justify-center text-text-muted dark:text-neutral-500">
           <ImageIcon className="w-10 h-10 mb-2" />
           <p className="text-sm">Image preview will appear here</p>
         </div>
@@ -115,7 +114,7 @@ export default function ProductForm({ product, isEditing = false }) {
       {/* Submit */}
       <button
         type="submit"
-        className="w-full py-4 text-sm font-semibold bg-surface-dark text-text-light rounded-full hover:bg-surface-dark-soft disabled:opacity-40 disabled:cursor-not-allowed transition-colors duration-200 cursor-pointer"
+        className="w-full py-4 text-sm font-semibold bg-surface-dark dark:bg-white text-text-light dark:text-black rounded-full hover:bg-surface-dark-soft dark:hover:bg-neutral-200 disabled:opacity-40 disabled:cursor-not-allowed transition-colors duration-200 cursor-pointer"
         disabled={loading}
       >
         {loading ? (

@@ -41,7 +41,7 @@ export default function EditProductPage() {
       <div className="max-w-2xl mx-auto px-4 py-8 animate-slideUp">
         <div className="skeleton w-36 h-8 rounded-lg mb-6" />
         <div className="skeleton w-48 h-10 rounded-lg mb-8" />
-        <div className="bg-surface-white p-6 md:p-8 rounded-3xl space-y-5">
+        <div className="bg-surface-white dark:bg-neutral-900 p-6 md:p-8 rounded-3xl space-y-5">
           <div className="skeleton skeleton-text-lg w-24 mb-2" />
           <div className="skeleton h-12 rounded-xl" />
           <div className="skeleton skeleton-text-lg w-20 mb-2" />
@@ -61,17 +61,17 @@ export default function EditProductPage() {
     <div className="max-w-2xl mx-auto px-4 py-8 animate-slideUp">
       <Link
         href={`/product/${id}`}
-        className="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-text-secondary hover:text-text-primary transition-colors duration-200 mb-6"
+        className="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-text-secondary dark:text-neutral-400 hover:text-text-primary dark:hover:text-white transition-colors duration-200 mb-6 rounded-lg hover:bg-surface-card dark:hover:bg-neutral-800"
       >
         <ArrowLeft className="w-4 h-4" />
         Back to Product
       </Link>
 
-      <h1 className="heading-display text-3xl md:text-4xl mb-8 text-text-primary">
+      <h1 className="heading-display text-3xl md:text-4xl mb-8 text-text-primary dark:text-white">
         EDIT PRODUCT
       </h1>
 
-      <div className="bg-surface-white p-6 md:p-8 rounded-3xl">
+      <div className="bg-surface-white dark:bg-neutral-900 p-6 md:p-8 rounded-3xl">
         <ProductForm product={product} isEditing />
       </div>
     </div>

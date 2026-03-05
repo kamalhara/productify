@@ -1,5 +1,7 @@
 @import "tailwindcss";
 
+@custom-variant dark (&:where(.dark, .dark *));
+
 @theme {
   --color-surface-primary: #f2f2f2;
   --color-surface-white: #ffffff;
@@ -38,11 +40,29 @@ body {
   color: #0a0a0a;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  transition:
+    background-color 0.3s ease,
+    color 0.3s ease;
+}
+
+:root.dark body,
+.dark body {
+  background-color: #0a0a0a !important;
+  color: #f0f0f0 !important;
+}
+
+:root.dark {
+  color-scheme: dark;
 }
 
 ::selection {
   background-color: #0a0a0a;
   color: #ffffff;
+}
+
+.dark ::selection {
+  background-color: #ffffff;
+  color: #0a0a0a;
 }
 
 h1,
@@ -55,7 +75,6 @@ h6 {
     var(--font-outfit), var(--font-geist-sans), system-ui, sans-serif;
 }
 
-/* Section heading style inspired by XSHOP */
 .heading-display {
   font-family: "Integral CF", var(--font-playfair), serif;
   font-weight: 800;
@@ -75,7 +94,6 @@ h6 {
     transform: translateY(0);
   }
 }
-
 @keyframes slideUp {
   from {
     opacity: 0;
@@ -86,7 +104,6 @@ h6 {
     transform: translateY(0);
   }
 }
-
 @keyframes slideDown {
   from {
     opacity: 0;
@@ -97,13 +114,11 @@ h6 {
     transform: translateY(0);
   }
 }
-
 @keyframes spin {
   to {
     transform: rotate(360deg);
   }
 }
-
 @keyframes float {
   0%,
   100% {
@@ -113,7 +128,6 @@ h6 {
     transform: translateY(-10px);
   }
 }
-
 @keyframes shimmer {
   0% {
     background-position: -200% 0;
@@ -122,7 +136,6 @@ h6 {
     background-position: 200% 0;
   }
 }
-
 @keyframes scaleIn {
   from {
     opacity: 0;
@@ -133,7 +146,6 @@ h6 {
     transform: scale(1);
   }
 }
-
 @keyframes pulseGlow {
   0%,
   100% {
@@ -143,7 +155,6 @@ h6 {
     box-shadow: 0 0 0 8px rgba(0, 0, 0, 0);
   }
 }
-
 @keyframes countUp {
   from {
     opacity: 0;
@@ -158,23 +169,18 @@ h6 {
 .animate-fadeIn {
   animation: fadeIn 0.3s ease-out both;
 }
-
 .animate-slideUp {
   animation: slideUp 0.5s ease-out both;
 }
-
 .animate-slideDown {
   animation: slideDown 0.25s ease-out both;
 }
-
 .animate-float {
   animation: float 3s ease-in-out infinite;
 }
-
 .animate-scaleIn {
   animation: scaleIn 0.4s ease-out both;
 }
-
 .animate-countUp {
   animation: countUp 0.6s ease-out both;
 }
@@ -193,23 +199,24 @@ h6 {
   animation: shimmer 1.5s ease-in-out infinite;
   border-radius: 12px;
 }
-
 .skeleton-card {
   border-radius: 16px;
 }
-
 .skeleton-text {
   height: 14px;
   border-radius: 6px;
 }
-
 .skeleton-text-lg {
   height: 18px;
   border-radius: 6px;
 }
-
 .skeleton-circle {
   border-radius: 50%;
+}
+
+:root.dark .skeleton {
+  background: linear-gradient(90deg, #1a1a1a 25%, #252525 50%, #1a1a1a 75%);
+  background-size: 200% 100%;
 }
 
 /* ===== CARD EFFECTS ===== */
@@ -218,7 +225,6 @@ h6 {
     transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94),
     box-shadow 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
-
 .card-hover:hover {
   transform: translateY(-4px);
   box-shadow:
@@ -231,6 +237,10 @@ h6 {
   backdrop-filter: blur(20px) saturate(180%);
   -webkit-backdrop-filter: blur(20px) saturate(180%);
   background-color: rgba(255, 255, 255, 0.85);
+}
+
+:root.dark .glass-effect {
+  background-color: rgba(17, 17, 17, 0.85);
 }
 
 /* ===== SCROLLBAR ===== */
@@ -247,6 +257,12 @@ h6 {
 }
 ::-webkit-scrollbar-thumb:hover {
   background: #aaa;
+}
+:root.dark ::-webkit-scrollbar-thumb {
+  background: #444;
+}
+:root.dark ::-webkit-scrollbar-thumb:hover {
+  background: #555;
 }
 
 /* ===== DIVIDER ===== */

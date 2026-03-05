@@ -2,13 +2,12 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { MessageCircle } from "lucide-react";
 
 export default function ProductCard({ product }) {
   return (
-    <Link href={`/product/${product.id}`} className="group block card-hover">
+    <Link href={`/product/${product.id}`} className="group card-hover block">
       {/* Image */}
-      <div className="relative aspect-square rounded-2xl overflow-hidden bg-surface-card mb-3">
+      <div className="relative aspect-square rounded-2xl overflow-hidden bg-surface-card dark:bg-neutral-800 mb-3">
         <Image
           src={product.imageUrl}
           alt={product.title}
@@ -16,43 +15,34 @@ export default function ProductCard({ product }) {
           className="object-cover group-hover:scale-105 transition-transform duration-500 ease-out"
           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
         />
-        {/* Subtle overlay on hover */}
         <div className="absolute inset-0 bg-black/0 group-hover:bg-black/5 transition-colors duration-300" />
       </div>
 
-      {/* Title */}
-      <h3 className="text-base font-bold text-text-primary mb-1 line-clamp-1 group-hover:text-text-secondary transition-colors duration-200">
+      {/* Info */}
+      <h3 className="text-base font-bold text-text-primary dark:text-white mb-1 line-clamp-1 group-hover:text-text-secondary dark:group-hover:text-neutral-300 transition-colors duration-200">
         {product.title}
       </h3>
-
-      {/* Description */}
-      <p className="text-sm text-text-secondary line-clamp-2 leading-relaxed mb-3">
+      <p className="text-sm text-text-secondary dark:text-neutral-400 line-clamp-2 mb-3 leading-relaxed">
         {product.description}
       </p>
 
-      {/* Footer */}
-      <div className="flex items-center justify-between">
+      {/* Author */}
+      {product.user && (
         <div className="flex items-center gap-2">
-          {product.user?.imageUrl && (
-            <div className="w-6 h-6 rounded-full overflow-hidden shrink-0 ring-2 ring-surface-card">
-              <Image
-                src={product.user.imageUrl}
-                alt={product.user.name || "User"}
-                width={24}
-                height={24}
-                className="w-full h-full object-cover"
-              />
-            </div>
-          )}
-          <span className="text-xs text-text-muted font-medium">
-            {product.user?.name || "Anonymous"}
+          <div className="w-6 h-6 rounded-full overflow-hidden bg-surface-card dark:bg-neutral-700 shrink-0 ring-2 ring-surface-card dark:ring-neutral-700">
+            <Image
+              src={product.user.imageUrl || "/placeholder.png"}
+              alt={product.user.name || "User"}
+              width={24}
+              height={24}
+              className="w-full h-full object-cover"
+            />
+          </div>
+          <span className="text-xs text-text-muted dark:text-neutral-500 truncate">
+            {product.user.name}
           </span>
         </div>
-        <div className="flex items-center gap-1 text-xs text-text-muted">
-          <MessageCircle className="w-3.5 h-3.5" />
-          {product.comment?.length || 0}
-        </div>
-      </div>
+      )}
     </Link>
   );
 }
